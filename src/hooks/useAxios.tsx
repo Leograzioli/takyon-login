@@ -4,7 +4,10 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const useAxios = (config: AxiosRequestConfig<object>, loadOnStart = true): [boolean, string, () => void] => {
+//first paramter acepts axios config. 
+//second parameter if its true(default) gonna fire axios call on load, otherwise its only gonna fire when request function is called
+//third parameter is to enable notify or not. true on defaul
+const useAxios = (config: AxiosRequestConfig<object>, loadOnStart = true, notify = true): [boolean, string, () => void] => {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
 
@@ -28,8 +31,9 @@ const useAxios = (config: AxiosRequestConfig<object>, loadOnStart = true): [bool
         if (loadOnStart) {
             sendRequest();            
         }
-    }, )
+    }, [])
 
+    //to send request on a second time 
     const request = () => {
         sendRequest();
     }
@@ -40,17 +44,25 @@ const useAxios = (config: AxiosRequestConfig<object>, loadOnStart = true): [bool
         axios(config)
             .then( () => {
 
-                succesNotify()
+                if (notify) {
+                    succesNotify()
+                }
                 setError('')
 
+                //timeout to show the notification
                 setTimeout(() => {
                     navigate('/')
                 }, 2000);
 
             })
             .catch((err) => {
+                
                 setError(err.response.data.message)
-                errorNotify(err.response.data.message)
+
+                if (notify) {
+                    errorNotify(err.response.data.message)                    
+                }
+
             }).finally(() => {
                 setLoading(false)
             })
