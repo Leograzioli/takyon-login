@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 export default function Header() {
   return (
     <header className=" bg-primary">
-        <div className="max-w-[1100px] h-[80px] mx-auto flex items-center justify-between">
+        <div className="max-w-[1100px] h-[80px] mx-auto flex items-center justify-between px-4 xl:px-0">
             <img className="h-[50px]" src="/assets/takyon-logo.jpg" alt="logo takyon" />
 
             <nav className="text-white font-semibold capitalize ">
